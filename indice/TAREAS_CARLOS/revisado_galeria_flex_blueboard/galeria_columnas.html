@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería en columnas</title>
+
+    <style>
+
+        /* Cabecera */
+        header {
+            background-color: #071526;
+            color: white;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 2vw;
+        }
+
+        .logo {
+            font-family: 'Georgia', serif;
+            font-size: 1.4rem;
+            letter-spacing: 0.04em;
+        }
+
+        /* Hero */
+        .hero {
+            width: 100%;
+            min-height: 30vh;
+            background-color: #071526;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2vw;
+        }
+
+        .hero h1 {
+            font-family: 'Georgia', serif;
+            font-size: clamp(1.8rem, 5vw, 3.8rem);
+            margin-bottom: 0.4em;
+        }
+
+        .hero p {
+            font-size: clamp(0.9rem, 2vw, 1.15rem);
+            opacity: 0.82;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #eef1f6;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        main {
+            width: 92vw;
+            max-width: 1400px;
+            margin: 3vh auto;
+        }
+
+        /* Contenedor flex en columnas */
+        .galeria-columnas {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 1.2vw;
+            max-height: 420px;
+            overflow: auto;
+        }
+
+        /* Cada miniatura */
+        .thumb {
+            width: 20vw;
+            min-width: 140px;
+            max-width: 240px;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 12vw;
+            min-height: 90px;
+            max-height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .thumb img:hover {
+            transform: scale(1.04);
+            transition: transform 0.25s;
+        }
+
+        .visor {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(3, 8, 18, 0.92);
+        }
+
+        .visor.activo {
+            display: flex;
+        }
+
+        .visor-contenido {
+            position: relative;
+            width: min(96vw, 1280px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .visor-img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .visor-pie {
+            color: rgba(255,255,255,0.86);
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .visor-btn {
+            position: absolute;
+            border: 0;
+            background: rgba(255,255,255,0.14);
+            color: white;
+            cursor: pointer;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .visor-btn:hover {
+            background: rgba(0,109,255,0.85);
+        }
+
+        .visor-cerrar {
+            top: -1rem;
+            right: -1rem;
+            width: 48px;
+            height: 48px;
+            font-size: 2rem;
+        }
+
+        .visor-prev,
+        .visor-next {
+            top: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 2.5rem;
+            transform: translateY(-50%);
+        }
+
+        .visor-prev { left: -4rem; }
+        .visor-next { right: -4rem; }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <span class="logo">BlueBoard Studio</span>
+    </header>
+
+    <section class="hero">
+        <h1>Galería en columnas</h1>
+        <p>flex-direction: column · flex-wrap: wrap · TPED1 · EASDA</p>
+        <P>Carlos Marhuenda Bermúdez</P>
+    </section>
+
+    <main>
+        <div class="galeria-columnas">
+
+            <div class="thumb">
+                <img src="imagenes_blueboard/09-custom-pro-deck.jpg" alt="Custom Pro Deck">
+            </div>
+
+            <div class="thumb">
+                <img src="imagenes_blueboard/10-illustrator-workshop.jpg" alt="Diseño e ilustración">
+            </div>
+
+            <div class="thumb">
+                <img src="imagenes_blueboard/11-streetwear-shirt.jpg" alt="Streetwear conectado">
+            </div>
+
+            <div class="thumb">
+                <img src="imagenes_blueboard/12-community-popup.jpg" alt="Crew local">
+            </div>
+
+            <div class="thumb">
+                <img src="imagenes_blueboard/13-art-board-table.jpg" alt="Mesa de arte aplicado">
+            </div>
+
+            <div class="thumb">
+                <img src="imagenes_blueboard/14-urban-screen.jpg" alt="Pantalla urbana">
+            </div>
+
+            <div class="thumb">
+                <img src="imagenes_blueboard/15-brand-kit-closeup.jpg" alt="Brand kit detalle">
+            </div>
+
+            <div class="thumb">
+                <img src="imagenes_blueboard/16-skater-plaza.jpg" alt="Skater plaza">
+            </div>
+
+        </div>
+    </main>
+    
+    <div class="visor" id="visor">
+        <div class="visor-contenido">
+            <button class="visor-btn visor-cerrar" id="visor-cerrar">×</button>
+            <button class="visor-btn visor-prev"   id="visor-prev">‹</button>
+            <img class="visor-img" id="visor-img" src="" alt="">
+            <button class="visor-btn visor-next"   id="visor-next">›</button>
+            <p class="visor-pie" id="visor-pie"></p>
+        </div>
+    </div>
+
+    <script>
+        const thumbs = Array.from(document.querySelectorAll('.thumb'));
+        const visor = document.getElementById('visor');
+        const visorImg = document.getElementById('visor-img');
+        const visorPie = document.getElementById('visor-pie');
+        const btnCerrar = document.getElementById('visor-cerrar');
+        const btnPrev = document.getElementById('visor-prev');
+        const btnNext = document.getElementById('visor-next');
+        let indice = 0;
+
+        function mostrar(i) {
+            indice = (i + thumbs.length) % thumbs.length;
+            const img = thumbs[indice].querySelector('img');
+            visorImg.src = img.src;
+            visorImg.alt = img.alt;
+            visorPie.textContent = img.alt;
+        }
+
+        function abrir(i) {
+            mostrar(i);
+            visor.classList.add('activo');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function cerrar() {
+            visor.classList.remove('activo');
+            document.body.style.overflow = '';
+            visorImg.src = '';
+        }
+
+        thumbs.forEach((thumb, i) => {
+            thumb.addEventListener('click', () => abrir(i));
+        });
+
+        btnCerrar.addEventListener('click', cerrar);
+        btnPrev.addEventListener('click', () => mostrar(indice - 1));
+        btnNext.addEventListener('click', () => mostrar(indice + 1));
+
+        visor.addEventListener('click', (e) => {
+            if (e.target === visor) cerrar();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!visor.classList.contains('activo')) return;
+            if (e.key === 'Escape')     cerrar();
+            if (e.key === 'ArrowLeft')  mostrar(indice - 1);
+            if (e.key === 'ArrowRight') mostrar(indice + 1);
+        });
+    </script>
+</body>
+
+</html>

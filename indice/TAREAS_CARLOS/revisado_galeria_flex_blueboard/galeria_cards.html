@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de cards</title>
+    <style>
+
+        /* Reset básico: elimina márgenes y padding por defecto */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Color de fondo y tipografía general */
+        body {
+            background-color: #eef1f6;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 16px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de cards</title>
+
+    <style>
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #eef1f6;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        /* Contenedor principal: 92% del ancho de la ventana,
+           máximo 1400px, centrado con margin auto */
+        main {
+            width: 92vw;
+            max-width: 1400px;
+            margin: 3vh auto;
+        }
+        /* Contenedor flex */
+        .galeria {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5vw;
+        }
+
+        /* Card: hijo flex */
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+            overflow: hidden;
+            flex: 1 1 220px;
+            min-width: 180px;
+            max-width: 340px;
+        }
+        /* La imagen ocupa todo el ancho de la card
+           y mantiene proporción 4:3 sin deformarse */
+        .card img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Zona de texto dentro de la card */
+        .card-body {
+            padding: 0.9rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .card-titulo {
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #071526;
+        }
+
+        .card-desc {
+            font-size: 0.82rem;
+            color: #4d5968;
+            line-height: 1.4;
+        }
+
+        .card-badge {
+            align-self: flex-start;
+            margin-top: 0.5rem;
+            font-size: 0.72rem;
+            padding: 0.15em 0.55em;
+            border-radius: 3px;
+            background-color: #006dff;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Card destacada: ocupa el doble de espacio */
+        .card.destacada {
+            flex: 2 1 400px;
+            max-width: 680px;
+        }
+
+        .card.destacada img {
+            aspect-ratio: 16 / 9;
+        }
+
+        /* Efecto al pasar el ratón */
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        /* Fondo oscuro del visor */
+        .visor {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(3, 8, 18, 0.92);
+        }
+
+        .visor.activo {
+            display: flex;
+        }
+
+        /* Contenido del visor */
+        .visor-contenido {
+            position: relative;
+            width: min(96vw, 1280px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Imagen ampliada */
+        .visor-img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        /* Texto pie de imagen */
+        .visor-pie {
+            color: rgba(255,255,255,0.86);
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        /* Botones: cerrar, anterior, siguiente */
+        .visor-btn {
+            position: absolute;
+            border: 0;
+            background: rgba(255,255,255,0.14);
+            color: white;
+            cursor: pointer;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .visor-btn:hover {
+            background: rgba(0,109,255,0.85);
+        }
+
+        .visor-cerrar {
+            top: -1rem;
+            right: -1rem;
+            width: 48px;
+            height: 48px;
+            font-size: 2rem;
+        }
+
+        .visor-prev,
+        .visor-next {
+            top: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 2.5rem;
+            transform: translateY(-50%);
+        }
+
+        .visor-prev { left: -4rem; }
+        .visor-next { right: -4rem; }
+
+        header {
+            background-color: #071526;
+            color: white;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 2vw;
+        }
+
+        .logo {
+            font-family: 'Georgia', serif;
+            font-size: 1.4rem;
+            letter-spacing: 0.04em;
+        }
+
+        .hero {
+            width: 100%;
+            min-height: 30vh;
+            background-color: #071526;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2vw;
+        }
+
+        .hero h1 {
+            font-family: 'Georgia', serif;
+            font-size: clamp(1.8rem, 5vw, 3.8rem);
+            margin-bottom: 0.4em;
+        }
+
+        .hero p {
+            font-size: clamp(0.9rem, 2vw, 1.15rem);
+            opacity: 0.82;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <span class="logo">BlueBoard Studio</span>
+    </header>
+
+    <section class="hero">
+        <h1>Galería de cards</h1>
+        <p>flex-wrap: wrap · flex-grow · min-width · max-width · TPED1 · EASDA</p>
+        <P>Carlos Marhuenda Bermúdez</P>
+    </section>
+
+    <main>
+        <div class="galeria">
+
+           <article class="card destacada">
+                <img src="imagenes_blueboard/01-deck-wall.jpg" alt="Deck Wall Studio">
+                <div class="card-body">
+                    <p class="card-titulo">Deck Wall Studio</p>
+                    <p class="card-desc">Muro de tablas personalizadas con gráfica azul y negra.</p>
+                    <span class="card-badge">Custom decks</span>
+                </div>
+            </article>
+
+            <article class="card">
+                <img src="imagenes_blueboard/02-workshop-design.jpg" alt="Proceso de diseño">
+                <div class="card-body">
+                    <p class="card-titulo">Proceso de diseño</p>
+                    <p class="card-desc">Mesa de trabajo con bocetos y referencias visuales.</p>
+                    <span class="card-badge">Proceso</span>
+                </div>
+            </article>
+
+            <article class="card">
+                <img src="imagenes_blueboard/03-brand-kit.jpg" alt="Kit de marca urbana">
+                <div class="card-body">
+                    <p class="card-titulo">Kit de marca urbana</p>
+                    <p class="card-desc">Aplicaciones visuales sobre tarjetas, pegatinas y soportes promocionales.</p>
+                    <span class="card-badge">Identidad</span>
+                </div>
+            </article>
+
+            <article class="card">
+                <img src="imagenes_blueboard/04-popup-market.jpg" alt="Pop-up urbano">
+                <div class="card-body">
+                    <p class="card-titulo">Pop-up urbano</p>
+                    <p class="card-desc">Mercado creativo con skaters y venta directa en entorno local.</p>
+                    <span class="card-badge">Evento</span>
+                </div>
+            </article>
+
+            <article class="card">
+                <img src="imagenes_blueboard/05-moodboard-table.jpg" alt="Moodboard visual">
+                <div class="card-body">
+                    <p class="card-titulo">Moodboard visual</p>
+                    <p class="card-desc">Bocetos, prints y pruebas gráficas sobre mesa de estudio.</p>
+                    <span class="card-badge">Moodboard</span>
+                </div>
+            </article>
+
+            <article class="card">
+                <img src="imagenes_blueboard/06-custom-handover.jpg" alt="Entrega custom deck">
+                <div class="card-body">
+                    <p class="card-titulo">Entrega custom deck</p>
+                    <p class="card-desc">Tabla personalizada entregada al cliente como pieza coleccionable.</p>
+                    <span class="card-badge">Producto</span>
+                </div>
+            </article>
+
+            <article class="card">
+                <img src="imagenes_blueboard/07-immersive-wall.jpg" alt="Archivo visual">
+                <div class="card-body">
+                    <p class="card-titulo">Archivo visual</p>
+                    <p class="card-desc">Instalación mural con narrativa de marca aplicada al espacio expositivo.</p>
+                    <span class="card-badge">Exposición</span>
+                </div>
+            </article>
+
+            <article class="card">
+                <img src="imagenes_blueboard/08-digital-metrics.jpg" alt="Comunidad digital">
+                <div class="card-body">
+                    <p class="card-titulo">Comunidad digital</p>
+                    <p class="card-desc">Métricas y archivo visual para comunicar el crecimiento de la comunidad.</p>
+                    <span class="card-badge">Digital</span>
+                </div>
+            </article>
+
+        </div>
+    </main>
+    <div class="visor" id="visor">
+        <div class="visor-contenido">
+            <button class="visor-btn visor-cerrar" id="visor-cerrar">×</button>
+            <button class="visor-btn visor-prev"   id="visor-prev">‹</button>
+            <img class="visor-img" id="visor-img" src="" alt="">
+            <button class="visor-btn visor-next"   id="visor-next">›</button>
+            <p class="visor-pie" id="visor-pie"></p>
+        </div>
+    </div>
+
+    <script>
+        const cards = Array.from(document.querySelectorAll('.card'));
+        const visor = document.getElementById('visor');
+        const visorImg = document.getElementById('visor-img');
+        const visorPie = document.getElementById('visor-pie');
+        const btnCerrar = document.getElementById('visor-cerrar');
+        const btnPrev = document.getElementById('visor-prev');
+        const btnNext = document.getElementById('visor-next');
+        let indice = 0;
+
+        function mostrar(i) {
+            indice = (i + cards.length) % cards.length;
+            const img = cards[indice].querySelector('img');
+            const titulo = cards[indice].querySelector('.card-titulo').textContent;
+            visorImg.src = img.src;
+            visorImg.alt = img.alt;
+            visorPie.textContent = titulo;
+        }
+
+        function abrir(i) {
+            mostrar(i);
+            visor.classList.add('activo');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function cerrar() {
+            visor.classList.remove('activo');
+            document.body.style.overflow = '';
+            visorImg.src = '';
+        }
+
+        cards.forEach((card, i) => {
+            card.addEventListener('click', () => abrir(i));
+        });
+
+        btnCerrar.addEventListener('click', cerrar);
+        btnPrev.addEventListener('click', () => mostrar(indice - 1));
+        btnNext.addEventListener('click', () => mostrar(indice + 1));
+
+        visor.addEventListener('click', (e) => {
+            if (e.target === visor) cerrar();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!visor.classList.contains('activo')) return;
+            if (e.key === 'Escape')      cerrar();
+            if (e.key === 'ArrowLeft')   mostrar(indice - 1);
+            if (e.key === 'ArrowRight')  mostrar(indice + 1);
+        });
+    </script>
+
+</body>
+
+</html>
+</body>
+
+</html>

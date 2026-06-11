@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARLOS MARHUENDA</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --negro:   #0a0a0a;
+            --cian:    #00f5ff;
+            --naranja: #ff6b00;
+            --blanco:  #ffffff;
+        }
+
+        body {
+            background-color: var(--negro);
+            color: var(--blanco);
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── NAVEGACIÓN ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 1000;
+            background-color: rgba(10, 10, 10, 0.92);
+            border-bottom: 1px solid rgba(0, 245, 255, 0.15);
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            color: var(--cian);
+            letter-spacing: 0.1em;
+        }
+
+        /* Botón hamburguesa */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: var(--blanco);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        /* Animación al abrir */
+        .hamburger.activo span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.activo span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.activo span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* Menú desplegable */
+        .nav-menu {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            background-color: rgba(10, 10, 10, 0.97);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .nav-menu.activo {
+            max-height: 400px;
+        }
+
+        .nav-menu a {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 0.1em;
+            color: var(--blanco);
+            text-decoration: none;
+            padding: 1rem 0;
+            width: 100%;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--cian);
+        }
+
+        /* ── HERO ── */
+        #hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+            margin-top: 60px;
+        }
+
+        .hero-titulo {
+            font-size: clamp(2.5rem, 12vw, 14rem);
+            color: var(--blanco);
+            line-height: 0.9;
+        }
+
+        .hero-titulo span {
+            color: var(--cian);
+        }
+
+        .hero-subtitulo {
+            font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-top: 1.5rem;
+        }
+
+        .hero-btn {
+            margin-top: 2.5rem;
+            padding: 0.8rem 2.5rem;
+            border: 2px solid var(--cian);
+            color: var(--cian);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.15em;
+            text-decoration: none;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .hero-btn:hover {
+            background-color: var(--cian);
+            color: var(--negro);
+        }
+
+        /* ── SOBRE MÍ ── */
+        #sobre-mi {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6rem 2rem;
+        }
+
+        .sobre-mi-titulo {
+            font-size: clamp(3rem, 10vw, 7rem);
+            color: var(--naranja);
+            margin-bottom: 3rem;
+        }
+
+        .sobre-mi-contenido {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .sobre-mi-foto {
+            width: clamp(200px, 30vw, 360px);
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border: 3px solid var(--naranja);
+            filter: grayscale(20%);
+        }
+
+        .sobre-mi-texto {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .sobre-mi-texto p {
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            line-height: 1.8;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1rem;
+        }
+
+        .sobre-mi-texto .acento {
+            color: var(--cian);
+            font-weight: 700;
+        }
+
+        /* ── ILUSTRACIÓN ── */
+        #ilustracion {
+            min-height: 100vh;
+            padding: 6rem 2rem;
+        }
+
+        .seccion-titulo {
+            font-size: clamp(3rem, 10vw, 7rem);
+            color: var(--cian);
+            margin-bottom: 3rem;
+        }
+
+        .galeria-ilustracion {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .galeria-ilustracion .item {
+            flex: 1 1 280px;
+            min-width: 220px;
+            max-width: 480px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .galeria-ilustracion .item img {
+            width: 100%;
+            aspect-ratio: unset;
+            height: auto
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s;
+            filter: grayscale(20%);
+        }
+
+        .galeria-ilustracion .item:hover img {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        /* Overlay con título al hacer hover */
+        .galeria-ilustracion .item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .galeria-ilustracion .item:hover .overlay {
+            opacity: 1;
+        }
+
+        .galeria-ilustracion .item .overlay p {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--cian);
+            letter-spacing: 0.1em;
+        }
+
+        /* ── VISOR ILUSTRACIÓN ── */
+        .visor {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .visor.activo {
+            display: flex;
+        }
+
+        .visor-contenido {
+            position: relative;
+            width: min(92vw, 900px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .visor-img {
+            max-width: 100%;
+            max-height: 75vh;
+            object-fit: contain;
+            border: 2px solid var(--cian);
+        }
+
+        .visor-titulo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--cian);
+            letter-spacing: 0.1em;
+        }
+
+        .visor-desc {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            max-width: 60ch;
+            line-height: 1.6;
+        }
+
+        .visor-btn {
+            position: absolute;
+            border: 0;
+            background: rgba(255,255,255,0.08);
+            color: white;
+            cursor: pointer;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .visor-btn:hover {
+            background: var(--naranja);
+        }
+
+        .visor-cerrar {
+            top: -1rem;
+            right: -1rem;
+            width: 48px;
+            height: 48px;
+            font-size: 2rem;
+        }
+
+        .visor-prev,
+        .visor-next {
+            top: 35%;
+            width: 56px;
+            height: 56px;
+            font-size: 2.5rem;
+            transform: translateY(-50%);
+        }
+
+        .visor-prev { left: -4rem; }
+        .visor-next { right: -4rem; }
+
+        /* ── INFLUENCIAS ── */
+        #influencias {
+            min-height: 100vh;
+            padding: 6rem 2rem;
+        }
+
+        .influencias-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .influencia-card {
+            flex: 1 1 280px;
+            min-width: 240px;
+            max-width: 400px;
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            padding: 1.5rem;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .influencia-card:hover {
+            border-color: var(--naranja);
+            transform: translateY(-4px);
+        }
+
+        .influencia-card h3 {
+            font-size: 1.4rem;
+            color: var(--cian);
+            letter-spacing: 0.08em;
+            margin-bottom: 0.6rem;
+        }
+
+        .influencia-card p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.6;
+        }
+
+        .influencia-card {
+            text-decoration: none;
+            display: block;
+        }
+
+        /* ── CONTACTO ── */
+        #contacto {
+            min-height: 60vh;
+            padding: 6rem 2rem;
+            border-top: 1px solid rgba(0, 245, 255, 0.15);
+        }
+
+        .contacto-contenido {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4rem;
+            margin-top: 2rem;
+        }
+
+        .contacto-texto {
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .contacto-texto p {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .contacto-email {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            color: var(--cian);
+            text-decoration: none;
+            letter-spacing: 0.08em;
+            border-bottom: 2px solid var(--cian);
+            padding-bottom: 0.2rem;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .contacto-email:hover {
+            color: var(--naranja);
+            border-color: var(--naranja);
+        }
+
+        .contacto-redes {
+            flex: 1;
+            min-width: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .red-social {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: rgba(255,255,255,0.65);
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            padding: 0.8rem;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .red-social:hover {
+            color: var(--cian);
+            border-color: var(--cian);
+        }
+
+        .red-social span.nombre {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.08em;
+        }
+
+        /* PIE */
+        footer {
+            background-color: #050505;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.25);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        footer span {
+            color: var(--naranja);
+        }
+
+        /* ── RESPONSIVE MÓVIL ── */
+        @media (max-width: 768px) {
+
+            /* Navegación */
+            nav {
+                padding: 0 1.2rem;
+            }
+
+            /* Hero */
+            #hero {
+                margin-top: 60px;
+                padding: 0 1.2rem;
+            }
+
+            /* Sobre mí: foto encima del texto */
+            .sobre-mi-contenido {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .sobre-mi-foto {
+                width: 70vw;
+                max-width: 280px;
+            }
+
+            /* Secciones: menos padding lateral */
+            #sobre-mi,
+            #ilustracion,
+            #influencias,
+            #contacto {
+                padding: 4rem 1.2rem;
+            }
+
+            /* Galería ilustración: una columna */
+            .galeria-ilustracion .item {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+
+            /* Influencias: una columna */
+            .influencia-card {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+
+            /* Contacto: columna */
+            .contacto-contenido {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            /* Visor: botones prev/next más cerca */
+            .visor-prev { left: -1.5rem; }
+            .visor-next { right: -1.5rem; }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <span class="nav-logo">CARLOS MARHUENDA</span>
+        <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <div class="nav-menu" id="nav-menu">
+        <a href="#hero">Inicio</a>
+        <a href="#sobre-mi">Sobre mí</a>
+        <a href="#ilustracion">Ilustración</a>
+        <a href="#influencias">Influencias</a>
+        <a href="#contacto">Contacto</a>
+    </div>
+
+    <section id="hero">
+        <h1 class="hero-titulo">CARLOS<span>MARHUENDA</span></h1>
+        <p class="hero-subtitulo">Ilustración · Influencias · Arte urbano</p>
+        <a href="#ilustracion" class="hero-btn">Ver trabajo</a>
+    </section>
+
+    <section id="sobre-mi">
+        <h2 class="sobre-mi-titulo">SOBRE MÍ</h2>
+        <div class="sobre-mi-contenido">
+            <img class="sobre-mi-foto"
+                 src="imagenes/foto-perfil.jpeg"
+                 alt="Charlie360">
+            <div class="sobre-mi-texto">
+                <p>Soy <span class="acento">Carlos Marhuenda</span>, ilustrador y músico con raíces en la cultura urbana. Mi trabajo mezcla la línea gráfica con el sonido, creando un universo visual y sonoro propio.</p>
+                <p>Desde el trazo en papel hasta la producción musical, cada pieza es una exploración entre lo analógico y lo digital.</p>
+                <p>Basado en Alicante. Disponible para colaboraciones y proyectos.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="ilustracion">
+        <h2 class="seccion-titulo">ILUSTRACIÓN</h2>
+        <div class="galeria-ilustracion">
+
+            <div class="item"
+                data-titulo="Título obra 1"
+                data-desc="Descripción de la obra 1. Técnica, año, inspiración.">
+                <img src="imagenes/EfectoPictorico.png" alt="Ilustración 1">
+                <div class="overlay"><p>Título obra 1</p></div>
+            </div>
+
+            <div class="item"
+                data-titulo="Título obra 2"
+                data-desc="Descripción de la obra 2. Técnica, año, inspiración.">
+                <img src="imagenes/Efecto Warhol.png" alt="Ilustración 2">
+                <div class="overlay"><p>Título obra 2</p></div>
+            </div>
+
+            
+
+            <div class="item"
+                data-titulo="Título obra 2"
+                data-desc="Descripción de la obra 2. Técnica, año, inspiración.">
+                <img src="imagenes/IMG_0304.jpg" alt="Ilustración 3">
+                <div class="overlay"><p>Título obra 3</p></div>
+            </div>
+
+            <div class="item"
+                data-titulo="Título obra 2"
+                data-desc="Descripción de la obra 2. Técnica, año, inspiración.">
+                <img src="imagenes/IMG_0305.jpg" alt="Ilustración 4">
+                <div class="overlay"><p>Título obra 4</p></div>
+            </div>
+
+            <div class="item"
+                data-titulo="Título obra 2"
+                data-desc="Descripción de la obra 2. Técnica, año, inspiración.">
+                <img src="imagenes/IMG_0308.jpg" alt="Ilustración 5">
+                <div class="overlay"><p>Título obra 5</p></div>
+            </div>
+
+            <div class="item"
+                data-titulo="Título obra 2"
+                data-desc="Descripción de la obra 2. Técnica, año, inspiración.">
+                <img src="imagenes/IMG-4109_fin.jpg" alt="Ilustración 6">
+                <div class="overlay"><p>Título obra 6</p></div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="influencias">
+        <h2 class="seccion-titulo">INFLUENCIAS</h2>
+        <div class="influencias-grid">
+
+            <a class="influencia-card"
+               href="https://sarah.dev"
+               target="_blank">
+                <h3>Sarah Drasner</h3>
+                <p>Diseñadora, desarrolladora frontend y divulgadora que escribe artículos y libros sobre temas como JavaScript o animaciones SVG.</p>
+            </a>
+
+            <a class="influencia-card"
+               href="https://jensimmons.com"
+               target="_blank">
+                <h3>Jen Simmons</h3>
+                <p>Designer advocate para la Fundación Mozilla.</p>
+            </a>
+
+            <a class="influencia-card"
+               href="https://lynnandtonic.com"
+               target="_blank">
+                <h3>Lynn Fisher</h3>
+                <p>Diseñadora, desarrolladora web y artista digital.</p>
+            </a>
+
+            <a class="influencia-card"
+               href="https://rachelandrew.co.uk"
+               target="_blank">
+                <h3>Rachel Andrew</h3>
+                <p>Desarrolladora frontend de UK y miembro del CSS Working Group.</p>
+            </a>
+
+            <a class="influencia-card"
+               href="https://sarasoueidan.com"
+               target="_blank">
+                <h3>Sara Soueidan</h3>
+                <p>Desarrolladora web de Líbano que realiza divulgación sobre frontend, especialmente de SVG y de accesibilidad.</p>
+            </a>
+
+            <a class="influencia-card"
+               href="https://una.im"
+               target="_blank">
+                <h3>Una Kravets</h3>
+                <p>Directora de diseño de producto y desarrolladora web de EEUU.</p>
+            </a>
+
+            <a class="influencia-card"
+               href="https://codepen.io/thebabydino"
+               target="_blank">
+                <h3>Ana Tudor</h3>
+                <p>Desarrolladora web con perfil destacado en CodePen, conocida por sus creaciones CSS avanzadas.</p>
+            </a>
+
+            <a class="influencia-card"
+               href="https://www.miriamsuzanne.com"
+               target="_blank">
+                <h3>Miriam Suzanne</h3>
+                <p>Desarrolladora web, diseñadora y artista.</p>
+            </a>
+
+        </div>
+    </section>
+
+    <section id="contacto">
+        <h2 class="seccion-titulo">CONTACTO</h2>
+        <div class="contacto-contenido">
+
+            <div class="contacto-texto">
+                <p>¿Tienes un proyecto en mente? ¿Quieres colaborar o simplemente saludar? Escríbeme.</p>
+                <a href="mailto:tu@email.com" class="contacto-email">tu@email.com</a>
+            </div>
+
+            <div class="contacto-redes">
+                <a href="https://instagram.com/tu-usuario" target="_blank" class="red-social">
+                    <span class="nombre">Instagram</span>
+                    <span>@tu-usuario</span>
+                </a>
+                <a href="https://soundcloud.com/tu-usuario" target="_blank" class="red-social">
+                    <span class="nombre">SoundCloud</span>
+                    <span>@tu-usuario</span>
+                </a>
+                <a href="https://behance.net/tu-usuario" target="_blank" class="red-social">
+                    <span class="nombre">Behance</span>
+                    <span>@tu-usuario</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 <span>Carlos Marhuenda</span> · Todos los derechos reservados</p>
+    </footer>
+
+    <div class="visor" id="visor">
+        <div class="visor-contenido">
+            <button class="visor-btn visor-cerrar" id="visor-cerrar">×</button>
+            <button class="visor-btn visor-prev"   id="visor-prev">‹</button>
+            <img class="visor-img" id="visor-img" src="" alt="">
+            <button class="visor-btn visor-next"   id="visor-next">›</button>
+            <p class="visor-titulo" id="visor-titulo"></p>
+            <p class="visor-desc"   id="visor-desc"></p>
+        </div>
+    </div>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('activo');
+            navMenu.classList.toggle('activo');
+        });
+
+        document.querySelectorAll('.nav-menu a').forEach(enlace => {
+            enlace.addEventListener('click', () => {
+                hamburger.classList.remove('activo');
+                navMenu.classList.remove('activo');
+            });
+        });
+
+        // Visor ilustraciones
+        const items = Array.from(document.querySelectorAll('.galeria-ilustracion .item'));
+        const visor = document.getElementById('visor');
+        const visorImg = document.getElementById('visor-img');
+        const visorTitulo = document.getElementById('visor-titulo');
+        const visorDesc = document.getElementById('visor-desc');
+        const btnCerrar = document.getElementById('visor-cerrar');
+        const btnPrev = document.getElementById('visor-prev');
+        const btnNext = document.getElementById('visor-next');
+        let indice = 0;
+
+        function mostrar(i) {
+            indice = (i + items.length) % items.length;
+            const item = items[indice];
+            visorImg.src = item.querySelector('img').src;
+            visorImg.alt = item.querySelector('img').alt;
+            visorTitulo.textContent = item.dataset.titulo;
+            visorDesc.textContent = item.dataset.desc;
+        }
+
+        function abrir(i) {
+            mostrar(i);
+            visor.classList.add('activo');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function cerrar() {
+            visor.classList.remove('activo');
+            document.body.style.overflow = '';
+            visorImg.src = '';
+        }
+
+        items.forEach((item, i) => {
+            item.addEventListener('click', () => abrir(i));
+        });
+
+        btnCerrar.addEventListener('click', cerrar);
+        btnPrev.addEventListener('click', () => mostrar(indice - 1));
+        btnNext.addEventListener('click', () => mostrar(indice + 1));
+
+        visor.addEventListener('click', (e) => {
+            if (e.target === visor) cerrar();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!visor.classList.contains('activo')) return;
+            if (e.key === 'Escape')     cerrar();
+            if (e.key === 'ArrowLeft')  mostrar(indice - 1);
+            if (e.key === 'ArrowRight') mostrar(indice + 1);
+        });
+    </script>
+
+</body>
+
+</html>
